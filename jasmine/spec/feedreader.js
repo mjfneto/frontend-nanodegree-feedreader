@@ -91,10 +91,6 @@ $(function() {
     * loaded after the first http request.
     */
     describe('New Feed Selection', function () {
-
-        /* A spec that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         */
         let initialFeed;
         let newFeed;
 
@@ -108,6 +104,12 @@ $(function() {
             });
         });
 
+        /* A spec that ensures when a new feed is loaded by the
+         * loadFeed function that the content actually changes.
+         * Jasmine's done function is passed both in `beforeEach`
+         * and in `it` to sufice the need of asynchronously
+         * testing the loadFeed function.
+         */
         it('is loaded', function (done) {
             expect(newFeed).not.toEqual(initialFeed);
             done();
