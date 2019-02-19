@@ -45,8 +45,8 @@ $(function() {
          */
         it('have names defined', function () {
             allFeeds.forEach(function (feed) {
-                expect(feed.url).toBeDefined();
-                expect(feed.url).not.toBe('');
+                expect(feed.name).toBeDefined();
+                expect(feed.name).not.toBe('');
             });
         });
     });
@@ -71,14 +71,10 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
-        it('is displayed when clicked', function () {
-            body.classList.remove('menu-hidden');
+        it('is displayed when clicked and hidden when clicked again', function () {
+            $('.menu-icon-link').trigger('click');
             expect(body).not.toHaveClass('menu-hidden');
-            body.classList.add('menu-hidden');
-        });
-
-        it('is hidden when clicked again', function () {
-            body.classList.add('menu-hidden');
+            $('.menu-icon-link').trigger('click');
             expect(body).toHaveClass('menu-hidden');
         });
     });
@@ -104,7 +100,7 @@ $(function() {
     });
 
     /* TODO: Write a new test suite named "New Feed Selection" */
-    describe('New Feed Selections', function () {
+    describe('New Feed Selection', function () {
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
@@ -113,24 +109,19 @@ $(function() {
         let initialFeed;
         let newFeed;
 
-        for (let i = 1; i < allFeeds.length; i++) {
-
-            describe(`feed: ${allFeeds[i].name}`, function () {
-                beforeEach(function (done) {
-                    loadFeed(i - 1, function () {
-                        initialFeed = $('.header').html();
-                        loadFeed(i, function () {
-                            newFeed = $('.header').html();
-                            done();
-                        });
-                    });
-                });
-
-                it(`loaded`, function (done) {
-                    expect(newFeed).not.toEqual(initialFeed);
+        beforeEach(function (done) {
+            loadFeed(0, function () {
+                initialFeed = $('.header').html();
+                loadFeed(1, function () {
+                    newFeed = $('.header').html();
                     done();
                 });
             });
-        };
+        });
+
+        it('is loaded', function (done) {
+            expect(newFeed).not.toEqual(initialFeed);
+            done();
+        });
     });
 }());
